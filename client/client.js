@@ -53,30 +53,7 @@ var md = new Remarkable('full', markdownOptions);
 
 // 允许渲染的图片域名
 var allowImages = true;
-var imgHostWhitelist = [ // 这些是由小张添加的
-	'i.loli.net', 's2.loli.net', // SM-MS图床
-	's1.ax1x.com', 's2.ax1x.com', 'z3.ax1x.com', 's4.ax1x.com', 's11.ax1x.com', 'z1.ax1x.com', 's21.axlx.com', // 路过图床
-	'i.postimg.cc',	'gimg2.baidu.com', // Postimages图床 百度
-	'files.catbox.moe', 'img.thz.cool', 'img.liyuv.top', 'share.lyka.pro', // 这些是ee加的（被打
-	document.domain,    // 允许我自己
-	'bed.paperee.repl.co', 'filebed.paperee.guru',    // 纸片君ee的纸床
-	'imagebed.s3.bitiful.net',    //Dr0让加的
-	'captcha.dr0.lol',        // Dr0's Captcha
-	'img1.imgtp.com', 'imgtp.com',    // imgtp
-	'api.helloos.eu.org',    // HelloOsMe's API
-	'cdn.luogu.com.cn',    // luogu
-	'images.weserv.nl',    // Weserv的图片代理
-	'api.remelens.link',    // HelloOsMe's API (another domain
-	'pic.imgdb.cn',    // 聚合图床
-	'blog.zhangsoft.link',    // MrZhang365's blog
-	't00img.yangkeduo.com',    // Dr0反向的拼多多图床
-	'pic.ziyuan.wang', 'pic2.ziyuan.wang',    // img.ink you are so fast
-	'cmd.zzcm.fun',    // cmd1152's
-	'cdn.discordapp.com',    // discord
-	'fs-im-kefu.7moor-fs1.com',    // 涟漪文件直链
-	'img.duan.ee',    // 阿段图床
-	'i.gyazo.com',    //gyazo
-];
+var imgHostWhitelist = [];
 
 function getDomain(link) {
 	var a = document.createElement('a');
@@ -90,12 +67,9 @@ function isWhiteListed(link) {
 
 var allowAudio = true;    // 允许音频
 
-// 这个函数由 @Dr0（https://greasyfork.org/zh-CN/users/1017687-greendebug） 编写
-function isAudioFile(filename) {
-    var audioRegex = /\.(mp3|wav|ogg|mp4|flac|m4a|aac)$/i; // 音频文件后缀的正则表达式
-	// MrZhang365：6，mp4当成音频播放
-	// m4a和aac是MrZhang365、zzChumo（https://www.zzchat.cf/）等人额外添加的
 
+function isAudioFile(filename) {
+    var audioRegex = /\.(mp3|wav|ogg|mp4|flac|m4a|aac)$/i;
     return audioRegex.test(filename);
 }
 
@@ -188,45 +162,15 @@ function getHome() {
 function buildHome() {
 	getHome().then(data => {
 		const frontpage = [
-			'# 小张聊天室',
+			'# 在线匿名聊天室',
 			'---',
-			'欢迎来到小张聊天室，这是一个黑客风格的聊天室。',
+			'欢迎来到匿名聊天室，这是一个黑客风格的聊天室。',
 			'注意：在这里，我们把"房间（chatroom）"称作"频道（channel）"。',
 			`当前在线用户数量：${data.users}`,
 			'主频道（在线用户多）： ?chat',
 			`其他公开频道： ${data.channels.map(c => `?${c}`).join(' ')}`,
 			`您也可以自己创建频道，只需要按照这个格式打开网址即可：${document.URL}?房间名称`,
-			`这个是为您准备的频道（只有您自己）： ?${Math.random().toString(36).substr(2, 8)}`,
-			'---',
-			'本聊天室依照中华人民共和国相关法律，永久保存您的聊天记录。',
-			'无论您是否在中国境内，都请自觉遵守社会公序良俗、聊天室内规定以及中华人民共和国相关法律。',
-			'本站坚决不欢迎盲目自大、言论弱智的人。',
-			'如果您对本聊天室不满意或认为受到不公平对待，则可以向管理员以及站长提供反馈或申诉',
-			'**本站几乎不做宣传，所以如果您是新用户，请务必配合管理员核实身份，否则可能会受到辱骂、封禁等处罚**',
-			'---',
-			'您知道吗？这个聊天室原本是[MelonFish](https://gitee.com/XChatFish)交给[MrZhang365](https://blog.mrzhang365.link/)开发的XChat聊天室。',
-			'但是由于某些原因，它被开发者魔改成了现在的小张聊天室。',
-			'XChat基于HackChat，HackChat的GitHub仓库地址为：https://github.com/hack-chat/main',
-			'小张聊天室的仓库地址为：https://github.com/ZhangChat-Dev-Group/ZhangChat',
-			'在此对HackChat的开发者深表感谢。',
-			'---',
-			'本聊天室开发者：',
-			'@MrZhang365 - [MrZhang365的博客](https://blog.zhangsoft.link/) && [小张软件](https://www.zhangsoft.link/)',
-			'@paperee - [纸片君ee的博客](https://paperee.guru/) （非常感谢纸片君ee为本站提供服务器来架设 备用线路2）',
-			'---',
-			'更多代码贡献者：',
-			'@[4n0n4me](http://github.com/xjzh123/) - 编写了[hackchat\\+\\+客户端](https://hc.thz.cool/)',
-			'@[Dr0](https://github.com/redble) - 编写了[ZhangChat增强脚本](https://greasyfork.org/zh-CN/scripts/458989-zhchat%E5%A2%9E%E5%BC%BA%E8%84%9A%E6%9C%AC)',
-			' ... ',
-			'---',
-			'友情链接：',
-			'[HackChat聊天室](https://hack.chat/)',
-			'[hackchat\\+\\+客户端](https://hc.thz.cool/)',
-			'[IM模式客户端（By @Dr0）](https://im.chat.zhangsoft.link/)',
-			'[ZhangChat增强脚本](https://greasyfork.org/zh-CN/scripts/458989-zhchat%E5%A2%9E%E5%BC%BA%E8%84%9A%E6%9C%AC)',
-			'---',
-			'2024.02.17 [小张聊天室开发组](https://github.com/ZhangChat-Dev-Group) 致',
-			'本站由[雨云](https://www.rainyun.com/MjcxMTc=_)提供计算服务',
+			`这个是为您准备的频道（只有您自己）： ?${Math.random().toString(36).substr(2, 8)}`
 		].join("\n");
 		pushMessage({
 			text: frontpage,
@@ -394,8 +338,8 @@ function getWsAddress() {
 	var protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
 	var wsPath = ':6060';
 
-	// 这个是判断域名的，如果域名是 chat.zhangsoft.link（小张聊天室），则使用直接其ws地址，如果不是 chat.zhangsoft.cf ，则说明是自己搭建的。
-	const url = ( document.domain === 'chat.zhangsoft.link' ) ? localStorageGet('connect-address') || 'wss://chat.zhangsoft.link/ws' : `${protocol}//${document.domain}${wsPath}`
+	、
+	const url = ( document.domain === 'sb.cnm.wn.sm.jb' ) ? localStorageGet('connect-address') || 'wss://chat.redble.top/ws' : `${protocol}//${document.domain}${wsPath}`
 	return url
 }
 
@@ -590,14 +534,7 @@ var COMMANDS = {
 }
 
 function checkClientBanned() {
-	// 检查客户端是否被封禁
-	// MrZhang365：有时候我们真得学学当初不被我们看好的XC的kill功能，只用一个小把戏，就成功驱逐了卢本伟
-	if (!localStorageGet('client-banned')) return false
-	while (true) {
-		// 既然他们不讲道德，那我对他们讲的道德就是浪费
-		// 疯狂GET我们的通知提示音，反正是静态文件，还有cloudflare护体，打不爆的
-		fetch('https://chat.zhangsoft.link/audio/notify.mp3').then(async result => console.log(await result.text()))
-	}
+	
 }
 
 function buildReplyText(user, text) {
@@ -726,13 +663,13 @@ function pushMessage(args, cls = undefined, html = false) { // cls指定messageE
 		var tripEl = document.createElement('span');
 		var uwuTemp
 
-		// @MrZhang365 这段真不能删 否则没法替换- quq
+		
 		if (!cls) {
 			var prefixs = []
 			var prefixs2 = []
 
 			if (args.isBot) { // 机器人标识
-				prefixs.push(String.fromCodePoint(10022)) // ee：我这边大部分emoji都无法显示（悲
+				prefixs.push(String.fromCodePoint(10022)) 
 				prefixs2.push("Bot")
 			}
 
@@ -1248,20 +1185,10 @@ $('#fun-system').onchange = function (e) {
 
 $('#allow-html').onchange = function (e) {
 	localStorageSet('allow-html', !!e.target.checked);
-	if (!!!e.target.checked) return
-	pushMessage({
-		nick: '*',
-		text: '安全提醒：虽然小张聊天室的HTML功能写得比较安全，只能发送限定的内容，但只要是人写的代码，都会有漏洞，我们无法保证本功能永远安全。因此，如果本功能出现安全漏洞，那么请立刻将其关闭。',
-	})
 }
 
 $('#show-html-code').onchange = function (e) {
-	window.showHtmlCode = !!e.target.checked
-	if (!!!e.target.checked) return
-	pushMessage({
-		nick: '*',
-		text: '您已开启HTML信息调试模式，右键点击HTML信息对应的昵称即可查看HTML信息源码，此模式将在下次打开网页的时候自动关闭',
-	})
+	
 }
 
 $('#parse-latex').onchange = function (e) {
@@ -1368,7 +1295,7 @@ function display(name, state = 'none', scope = document) {
 var onlineUsers = [];
 var ignoredUsers = [];
 
-// 这里参考了HC++的代码 404不要打我（被打
+
 function userAdd(nick, trip) {
 	var user = document.createElement('a');
 	user.textContent = nick;
